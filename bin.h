@@ -162,9 +162,9 @@ binrw_error_t readsz(FILE * file, char **s);
  * равен NULL, функция завершается с ошибкой. */
 binrw_error_t writesz(FILE * file, char *s);
 
-binrw_error_t readf(FILE * file, char *format, ...);
+binrw_error_t readf(FILE * file, const char *format, ...);
 
-binrw_error_t writef(FILE * file, char *format, ...);
+binrw_error_t writef(FILE * file, const char *format, ...);
 
 binrw_error_t unpackl(buf_t * buf, size_t * pnum, size_t len);
 

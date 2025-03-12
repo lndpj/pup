@@ -1260,12 +1260,13 @@ binrw_error_t writesz(FILE * file, char *s)
   return OK;
 }
 
-binrw_error_t readf(FILE * file, char *format, ...)
+binrw_error_t readf(FILE * file, const char *format, ...)
 {
   size_t len;
   char **sval;
   uint8_t *pval;
   size_t *nval;
+  char *fmt;
   char *nf;
   binrw_error_t status;
   va_list vl;
@@ -1277,80 +1278,82 @@ binrw_error_t readf(FILE * file, char *format, ...)
   sval = NULL;
   pval = NULL;
   nval = NULL;
-  nf = format;
+  fmt = (char *)format;
+  nf = fmt;
   status = OK;
-  while (format[0] != '\0')
+  while (fmt[0] != '\0')
   {
-    if ((format[0] == 'l') || (format[0] == 'b'))
+    if ((fmt[0] == 'l') || (fmt[0] == 'b'))
       nval = va_arg(vl, size_t *);
-    else if (format[0] == 's')
+    else if (fmt[0] == 's')
       sval = va_arg(vl, char **);
 
-    else if (format[0] == 'c')
+    else if (fmt[0] == 'c')
       pval = va_arg(vl, uint8_t *);
     else
       goto readf_error;
 
-    if (isdigit(format[1]) != 0)
-      len = strtoul(&(format[1]), &nf, 10);
-    else if (format[1] == 'n')
+    if (isdigit(fmt[1]) != 0)
+      len = strtoul(&(fmt[1]), &nf, 10);
+    else if (fmt[1] == 'n')
     {
       len = va_arg(vl, size_t);
-      nf = &(format[2]);
+      nf = &(fmt[2]);
     }
-    else if (format[1] == 'N')
+    else if (fmt[1] == 'N')
     {
       len = *(va_arg(vl, size_t *));
-      nf = &(format[2]);
+      nf = &(fmt[2]);
     }
-    else if (format[1] == '\0')
+    else if (fmt[1] == '\0')
       goto readf_error;
     else
-      nf = &(format[2]);
+      nf = &(fmt[2]);
 
-    if (format[0] == 'l')
+    if (fmt[0] == 'l')
       status = readl(file, nval, len);
-    else if (format[0] == 'b')
+    else if (fmt[0] == 'b')
       status = readb(file, nval, len);
-    else if (format[0] == 's')
+    else if (fmt[0] == 's')
     {
-      if (format[1] == 'z')
+      if (fmt[1] == 'z')
         status = readsz(file, sval);
-      else if (format[1] == 'p')
+      else if (fmt[1] == 'p')
         status = readsp(file, sval);
-      else if ((format[1] == 'n') || (format[1] == 'N') ||
-               (isdigit(format[1]) != 0))
+      else if ((fmt[1] == 'n') || (fmt[1] == 'N') ||
+               (isdigit(fmt[1]) != 0))
         status = readsn(file, sval, len);
       else
         goto readf_error;
     }
-    else if (format[0] == 'c')
+    else if (fmt[0] == 'c')
       status = readc(file, pval, len);
     else
       goto readf_error;
 
     if (status != OK)
       goto readio_error;
-    format = nf;
+    fmt = nf;
   }
   va_end(vl);
   return OK;
 readf_error:
-  fprintf(stderr, "readf: %s, %s\n", format, binrw_strerror(FORMAT_ERROR));
+  fprintf(stderr, "readf: %s, %s\n", fmt, binrw_strerror(FORMAT_ERROR));
   va_end(vl);
   return FORMAT_ERROR;
 readio_error:
-  fprintf(stderr, "readf: %s, %s\n", format, binrw_strerror(status));
+  fprintf(stderr, "readf: %s, %s\n", fmt, binrw_strerror(status));
   va_end(vl);
   return status;
 }
 
-binrw_error_t writef(FILE * file, char *format, ...)
+binrw_error_t writef(FILE * file, const char *format, ...)
 {
   size_t len;
   size_t nval;
   uint8_t *pval;
   char *sval;
+  char *fmt;
   char *nf;
   binrw_error_t status;
   va_list vl;
@@ -1362,74 +1365,75 @@ binrw_error_t writef(FILE * file, char *format, ...)
   nval = 0xDEADBEEF;
   sval = NULL;
   pval = NULL;
-  nf = format;
+  fmt = (char *)format;
+  nf = fmt;
   status = OK;
-  while (format[0] != '\0')
+  while (fmt[0] != '\0')
   {
-    if ((format[0] == 'l') || (format[0] == 'b'))
+    if ((fmt[0] == 'l') || (fmt[0] == 'b'))
       nval = va_arg(vl, size_t);
-    else if (format[0] == 's')
+    else if (fmt[0] == 's')
       sval = va_arg(vl, char *);
 
-    else if (format[0] == 'c')
+    else if (fmt[0] == 'c')
       pval = va_arg(vl, uint8_t *);
-    else if (format[0] == 'z')
+    else if (fmt[0] == 'z')
       ;
     else
       goto writef_error;
 
-    if (isdigit(format[1]) != 0)
-      len = strtoul(&(format[1]), &nf, 10);
-    else if (format[1] == 'n')
+    if (isdigit(fmt[1]) != 0)
+      len = strtoul(&(fmt[1]), &nf, 10);
+    else if (fmt[1] == 'n')
     {
       len = va_arg(vl, size_t);
-      nf = &(format[2]);
+      nf = &(fmt[2]);
     }
-    else if (format[1] == 'N')
+    else if (fmt[1] == 'N')
     {
       len = *(va_arg(vl, size_t *));
-      nf = &(format[2]);
+      nf = &(fmt[2]);
     }
-    else if (format[1] == '\0')
+    else if (fmt[1] == '\0')
       goto writef_error;
     else
-      nf = &(format[2]);
+      nf = &(fmt[2]);
 
-    if (format[0] == 'l')
+    if (fmt[0] == 'l')
       status = writel(file, nval, len);
-    else if (format[0] == 'b')
+    else if (fmt[0] == 'b')
       status = writeb(file, nval, len);
-    else if (format[0] == 's')
+    else if (fmt[0] == 's')
     {
-      if (format[1] == 'z')
+      if (fmt[1] == 'z')
         status = writesz(file, sval);
-      else if (format[1] == 'p')
+      else if (fmt[1] == 'p')
         status = writesp(file, sval);
-      else if ((format[1] == 'n') || (format[1] == 'N') ||
-               (isdigit(format[1]) != 0))
+      else if ((fmt[1] == 'n') || (fmt[1] == 'N') ||
+               (isdigit(fmt[1]) != 0))
         status = writesn(file, sval, len);
       else
         goto writef_error;
     }
-    else if (format[0] == 'c')
+    else if (fmt[0] == 'c')
       status = writec(file, pval, len);
-    else if (format[0] == 'z')
+    else if (fmt[0] == 'z')
       status = writec(file, NULL, len);
     else
       goto writef_error;
 
     if (status != OK)
       goto writeio_error;
-    format = nf;
+    fmt = nf;
   }
   va_end(vl);
   return OK;
 writef_error:
-  fprintf(stderr, "writef: %s, %s\n", format, binrw_strerror(FORMAT_ERROR));
+  fprintf(stderr, "writef: %s, %s\n", fmt, binrw_strerror(FORMAT_ERROR));
   va_end(vl);
   return FORMAT_ERROR;
 writeio_error:
-  fprintf(stderr, "writef: %s, %s\n", format, binrw_strerror(status));
+  fprintf(stderr, "writef: %s, %s\n", fmt, binrw_strerror(status));
   va_end(vl);
   return status;
 }
