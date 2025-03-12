@@ -14,17 +14,32 @@ bool_t is_pack(restable_t * rt);
 
 bool_t pack_read_dir(restable_t * rt);
 bool_t pack_fill_filename(resentry_t * re);
-
 #define pack_extract_resource rt_extract_resource
-
 #define pack_save_meta rt_not_save_meta
 #define pack_load_meta rt_not_load_meta
-
 bool_t pack_fill_name(resentry_t * re);
 bool_t pack_prepare_dir(restable_t * rt);
 bool_t pack_pack_files(restable_t * rt);
-
 #define pack_add_resource rt_add_resource
 bool_t pack_write_dir(restable_t * rt);
+
+bool_t is_sin(restable_t * rt);
+
+#define SIN_SUBDIRS TRUE
+#define SIN_MERGE TRUE
+#define SIN_META FALSE
+#define SIN_TIME FALSE
+#define SIN_PAGE 1
+
+bool_t sin_read_dir(restable_t * rt);
+bool_t sin_fill_filename(resentry_t * re);
+#define sin_extract_resource rt_extract_resource
+#define sin_save_meta rt_not_save_meta
+#define sin_load_meta rt_not_load_meta
+bool_t sin_fill_name(resentry_t * re);
+bool_t sin_prepare_dir(restable_t * rt);
+bool_t sin_pack_files(restable_t * rt);
+#define sin_add_resource rt_add_resource
+bool_t sin_write_dir(restable_t * rt);
 
 #endif

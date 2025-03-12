@@ -211,6 +211,27 @@ plugin_t plugins[] = {
    &pack_add_resource,
    &pack_write_dir},
   {
+   "sin",
+   "SIN-files of SiN",
+   SIN_SUBDIRS,
+   SIN_MERGE,
+   SIN_META,
+   SIN_TIME,
+   SIN_PAGE,
+   &is_sin,
+
+   &sin_read_dir,
+   &sin_fill_filename,
+   &sin_extract_resource,
+
+   &sin_save_meta,
+   &sin_load_meta,
+
+   &sin_fill_name,
+   &sin_prepare_dir,
+   &sin_add_resource,
+   &sin_write_dir},
+  {
    "pack2",
    "PAK-files of Daikatana",
    PACK2_SUBDIRS,
