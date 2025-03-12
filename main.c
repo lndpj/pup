@@ -8,7 +8,7 @@
 #include "pak.h"
 #include "viv.h"
 #include "vpp.h"
-#include "pack.h"
+#include "sin_pack.h"
 #include "pack2.h"
 #include "wad23.h"
 #include "resource1.h"
