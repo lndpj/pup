@@ -34,6 +34,7 @@ The program is called PUP - Packer/UnPacker (the word "pup" can also be translat
 6. When specifying the --print option, the program prints technical information from the specified file's resource directory to standard output (resource offset, its compressed and original size, resource name, etc.). To prevent the program from attempting to determine the file format automatically, you can specify the --plugin option with a specific format.
 
 Program Help:
+```sh
     $ ./pup
     Usage: pup --list
            pup --plugin <plugin> --pack <file> [<dir> [<meta>]]
@@ -48,9 +49,10 @@ Program Help:
            --unpack <file> [<dir> [<meta>]]  - unpacking specified file to dir
            --savemeta <file> [<meta>]  - only save metadata to specified metafile
            --print <file>    - print technical information to stdout
-
+```
 List of supported formats:
 
+```sh
     $ ./pup --list
     Supported plugins:
     grp       - GRP-files of Duke Nukem 3D, Witchaven, Redneck Rampage, Shadow Warrior
@@ -71,6 +73,7 @@ List of supported formats:
     rff30     - RFF-files of Blood, version 3.0
     rff31     - RFF-files of Blood, version 3.1
     labn      - LABN-files of Outlaws
+```
 
 The program does an excellent job of determining the type ...of the source file, so specifying the plugin to be used is entirely optional. You only need to specify the plugin during the packing process so that the program generates a file in the desired format.
 
