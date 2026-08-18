@@ -10,6 +10,7 @@
 #include "vpp.h"
 #include "sin_pack.h"
 #include "pack2.h"
+#include "adat.h"
 #include "wad23.h"
 #include "resource1.h"
 #include "resource2.h"
@@ -252,6 +253,27 @@ plugin_t plugins[] = {
    &pack2_prepare_dir,
    &pack2_add_resource,
    &pack2_write_dir},
+  {
+   "adat",
+   "DAT-files of Anachronox",
+   ADAT_SUBDIRS,
+   ADAT_MERGE,
+   ADAT_META,
+   ADAT_TIME,
+   ADAT_PAGE,
+   &is_adat,
+
+   &adat_read_dir,
+   &adat_fill_filename,
+   &adat_extract_resource,
+
+   &adat_save_meta,
+   &adat_load_meta,
+
+   &adat_fill_name,
+   &adat_prepare_dir,
+   &adat_add_resource,
+   &adat_write_dir},
   {
    "wad2",
    "WAD-file of Quake",
