@@ -33,7 +33,7 @@ The program is called PUP - Packer/UnPacker (the word "pup" can also be translat
 5. When the --savemeta option is specified, the program attempts to detect the format of the specified file and save the metadata to the specified file. If the plugin does not contain metadata, the program will notify you and exit. If the metadata file name is not specified, the original file name is used with the extension replaced with ".txt." To prevent the program from attempting to determine the file format automatically, you can specify the --plugin option with a specific format.
 6. When specifying the --print option, the program prints technical information from the specified file's resource directory to standard output (resource offset, its compressed and original size, resource name, etc.). To prevent the program from attempting to determine the file format automatically, you can specify the --plugin option with a specific format.
 
-Program Help:
+**Program Help:**
 ```sh
     $ ./pup
     Usage: pup --list
@@ -50,7 +50,7 @@ Program Help:
            --savemeta <file> [<meta>]  - only save metadata to specified metafile
            --print <file>    - print technical information to stdout
 ```
-List of supported formats:
+**List of supported formats:**
 
 ```sh
     $ ./pup --list
